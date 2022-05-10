@@ -36,7 +36,7 @@ func (n *node) insert(pattern string, parts []string, height int) {
 
 // search 查询结点
 func (n *node) search(parts []string, height int) *node {
-	if len(parts) == height || strings.HasSuffix(n.part, "*") {
+	if len(parts) == height || strings.HasPrefix(n.part, "*") {
 		if n.pattern == "" {
 			return nil
 		}
