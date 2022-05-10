@@ -64,11 +64,12 @@ func (n *node) matchChild(part string) *node {
 }
 
 // matchChildren 所有匹配成功的结点，用于查找
-func (n *node) matchChildren(part string) (ans []*node) {
+func (n *node) matchChildren(part string) []*node {
+	var nodes []*node
 	for _, child := range n.children {
 		if child.part == part || child.isWild {
-			ans = append(ans, child)
+			nodes = append(nodes, child)
 		}
 	}
-	return
+	return nodes
 }
