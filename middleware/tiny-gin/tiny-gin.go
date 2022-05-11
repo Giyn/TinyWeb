@@ -77,7 +77,7 @@ func (engine *Engine) Run(addr string) (err error) {
 func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	var middlewares []HandlerFunc
 	// 每接收到一个请求都需逐一匹配前缀来添加中间件
-	// gin是在前缀树的节点中添加中间件的切片，这样在匹配动态路由并解析参数时，就可以同时获得各分组的中间件。
+	// gin 是在前缀树的节点中添加中间件的切片，这样在匹配动态路由并解析参数时，就可以同时获得各分组的中间件。
 	for _, group := range engine.groups {
 		// 判断请求适用于哪些中间件
 		if strings.HasPrefix(req.URL.Path, group.prefix) {
