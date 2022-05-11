@@ -22,7 +22,6 @@ type (
 	RouterGroup struct {
 		prefix      string
 		middlewares []HandlerFunc // 支持中间件
-		parent      *RouterGroup  // 支持嵌套
 		engine      *Engine       // 通过 Engine 间接地访问各种接口
 	}
 	// Engine 框架的所有资源由 Engine 统一协调
@@ -45,7 +44,6 @@ func (group *RouterGroup) Group(prefix string) *RouterGroup {
 	engine := group.engine
 	newGroup := &RouterGroup{
 		prefix: group.prefix + prefix,
-		parent: group,
 		engine: engine,
 	}
 	engine.groups = append(engine.groups, newGroup)
