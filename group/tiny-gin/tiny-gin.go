@@ -26,9 +26,9 @@ type (
 	}
 	// Engine 框架的所有资源由 Engine 统一协调
 	Engine struct {
-		*RouterGroup
-		router *router
-		groups []*RouterGroup // 存储所有路由组
+		*RouterGroup // 继承底层模块所拥有的能力
+		router       *router
+		groups       []*RouterGroup // 存储所有路由组
 	}
 )
 
@@ -70,5 +70,5 @@ func (engine *Engine) Run(addr string) (err error) {
 
 func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	c := newContext(w, req)
-	engine.router.handle(c)
+	engine.router.handle(c) // 使用底层模块提供的能力
 }
