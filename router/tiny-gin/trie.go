@@ -10,13 +10,20 @@
 
 package tiny_gin
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 type node struct {
 	pattern  string // 待匹配路由，如 /p/:lang
 	part     string // 路由中的一部分，如 :lang
 	children []*node
 	isWild   bool // 是否精确匹配，part 含有 : 或 * 时为 true
+}
+
+func (n *node) String() string {
+	return fmt.Sprintf("node{pattern=%s, part=%s, isWild=%t}", n.pattern, n.part, n.isWild)
 }
 
 // insert 插入结点
@@ -51,6 +58,15 @@ func (n *node) search(parts []string, height int) *node {
 		}
 	}
 	return nil
+}
+
+func (n *node) travel(list *[]*node) {
+	if n.pattern != "" {
+		*list = append(*list, n)
+	}
+	for _, child := range n.children {
+		child.travel(list)
+	}
 }
 
 // matchChild 第一个匹配成功的结点，用于插入
