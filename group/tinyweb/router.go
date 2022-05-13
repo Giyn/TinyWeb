@@ -1,6 +1,6 @@
 /*
 -------------------------------------
-# @Time    : 2022/5/10 23:19:42
+# @Time    : 2022/5/11 14:46:37
 # @Author  : Giyn
 # @Email   : giyn.jy@gmail.com
 # @File    : router.go
@@ -8,7 +8,7 @@
 -------------------------------------
 */
 
-package tiny_gin
+package tinyweb
 
 import (
 	"net/http"

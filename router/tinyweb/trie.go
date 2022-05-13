@@ -1,6 +1,6 @@
 /*
 -------------------------------------
-# @Time    : 2022/5/11 20:37:40
+# @Time    : 2022/5/10 20:45:03
 # @Author  : Giyn
 # @Email   : giyn.jy@gmail.com
 # @File    : trie.go
@@ -8,7 +8,7 @@
 -------------------------------------
 */
 
-package tiny_gin
+package tinyweb
 
 import (
 	"fmt"

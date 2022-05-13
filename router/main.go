@@ -11,25 +11,25 @@
 package main
 
 import (
-	tinygin "TinyGin/router/tiny-gin"
+	"TinyGin/router/tinyweb"
 	"net/http"
 )
 
 func main() {
-	r := tinygin.New()
-	r.GET("/", func(c *tinygin.Context) {
+	r := tinyweb.New()
+	r.GET("/", func(c *tinyweb.Context) {
 		c.HTML(http.StatusOK, "<h1>Hello TinyGin</h1>")
 	})
-	r.GET("/hello", func(c *tinygin.Context) {
+	r.GET("/hello", func(c *tinyweb.Context) {
 		// expect /hello?name=Giyn
 		c.String(http.StatusOK, "hello %s, you're at %s\n", c.Query("name"), c.Path)
 	})
-	r.GET("/hello/:name", func(c *tinygin.Context) {
+	r.GET("/hello/:name", func(c *tinyweb.Context) {
 		// expect /hello/Giyn
 		c.String(http.StatusOK, "hello %s, you're at %s\n", c.Param("name"), c.Path)
 	})
-	r.GET("/assets/*filepath", func(c *tinygin.Context) {
-		c.JSON(http.StatusOK, tinygin.H{"filepath": c.Param("filepath")})
+	r.GET("/assets/*filepath", func(c *tinyweb.Context) {
+		c.JSON(http.StatusOK, tinyweb.H{"filepath": c.Param("filepath")})
 	})
 	r.Run(":9999")
 }

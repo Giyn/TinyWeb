@@ -11,21 +11,21 @@
 package main
 
 import (
-	tinygin "TinyGin/context/tiny-gin"
+	"TinyGin/context/tinyweb"
 	"net/http"
 )
 
 func main() {
-	r := tinygin.New()
-	r.GET("/", func(c *tinygin.Context) {
-		c.HTML(http.StatusOK, "<h1>Hello TinyGin</h1>")
+	r := tinyweb.New()
+	r.GET("/", func(c *tinyweb.Context) {
+		c.HTML(http.StatusOK, "<h1>Hello TinyWeb</h1>")
 	})
-	r.GET("/hello", func(c *tinygin.Context) {
+	r.GET("/hello", func(c *tinyweb.Context) {
 		// expect /hello?name=Giyn
 		c.String(http.StatusOK, "hello %s, you're at %s\n", c.Query("name"), c.Path)
 	})
-	r.POST("/login", func(c *tinygin.Context) {
-		c.JSON(http.StatusOK, tinygin.H{
+	r.POST("/login", func(c *tinyweb.Context) {
+		c.JSON(http.StatusOK, tinyweb.H{
 			"username": c.PostForm("username"),
 			"password": c.PostForm("password"),
 		})

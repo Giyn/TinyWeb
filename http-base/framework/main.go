@@ -11,13 +11,13 @@
 package main
 
 import (
-	tinygin "TinyGin/http-base/framework/tiny-gin"
+	"TinyGin/http-base/framework/tinyweb"
 	"fmt"
 	"net/http"
 )
 
 func main() {
-	r := tinygin.New()
+	r := tinyweb.New()
 	r.GET("/", func(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "URL.Path = %q\n", req.URL.Path)
 	})

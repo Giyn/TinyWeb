@@ -1,6 +1,6 @@
 /*
 -------------------------------------
-# @Time    : 2022/5/11 18:10:50
+# @Time    : 2022/5/11 20:52:40
 # @Author  : Giyn
 # @Email   : giyn.jy@gmail.com
 # @File    : router_test.go
@@ -8,7 +8,7 @@
 -------------------------------------
 */
 
-package tiny_gin
+package tinyweb
 
 import (
 	"fmt"

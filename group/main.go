@@ -11,33 +11,33 @@
 package main
 
 import (
-	tinygin "TinyGin/group/tiny-gin"
+	"TinyGin/group/tinyweb"
 	"net/http"
 )
 
 func main() {
-	r := tinygin.New()
-	r.GET("/index", func(c *tinygin.Context) {
+	r := tinyweb.New()
+	r.GET("/index", func(c *tinyweb.Context) {
 		c.HTML(http.StatusOK, "<h1>Index Page</h1>")
 	})
 	v1 := r.Group("/v1")
 	{
-		v1.GET("/", func(c *tinygin.Context) {
-			c.HTML(http.StatusOK, "<h1>Hello TinyGin</h1>")
+		v1.GET("/", func(c *tinyweb.Context) {
+			c.HTML(http.StatusOK, "<h1>Hello TinyWeb</h1>")
 		})
-		v1.GET("/hello", func(c *tinygin.Context) {
+		v1.GET("/hello", func(c *tinyweb.Context) {
 			// expect /hello?name=Giyn
 			c.String(http.StatusOK, "hello %s, you're at %s\n", c.Query("name"), c.Path)
 		})
 	}
 	v2 := r.Group("/v2")
 	{
-		v2.GET("/hello/:name", func(c *tinygin.Context) {
+		v2.GET("/hello/:name", func(c *tinyweb.Context) {
 			// expect /hello/Giyn
 			c.String(http.StatusOK, "hello %s, you're at %s\n", c.Param("name"), c.Path)
 		})
-		v2.POST("/login", func(c *tinygin.Context) {
-			c.JSON(http.StatusOK, tinygin.H{
+		v2.POST("/login", func(c *tinyweb.Context) {
+			c.JSON(http.StatusOK, tinyweb.H{
 				"username": c.PostForm("username"),
 				"password": c.PostForm("password"),
 			})

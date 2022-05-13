@@ -1,6 +1,6 @@
 /*
 -------------------------------------
-# @Time    : 2022/5/11 14:43:27
+# @Time    : 2022/5/11 20:37:52
 # @Author  : Giyn
 # @Email   : giyn.jy@gmail.com
 # @File    : context.go
@@ -8,7 +8,7 @@
 -------------------------------------
 */
 
-package tiny_gin
+package tinyweb
 
 import (
 	"encoding/json"
@@ -29,6 +29,9 @@ type Context struct {
 	Params map[string]string // 提供对路由参数的访问
 	// 响应字段
 	StatusCode int
+	// 中间件
+	handlers []HandlerFunc
+	index    int // 记录当前执行到第几个中间件
 }
 
 func newContext(w http.ResponseWriter, req *http.Request) *Context {
@@ -37,7 +40,22 @@ func newContext(w http.ResponseWriter, req *http.Request) *Context {
 		Req:    req,
 		Path:   req.URL.Path,
 		Method: req.Method,
+		index:  -1,
 	}
+}
+
+func (c *Context) Next() {
+	c.index++
+	s := len(c.handlers)
+	// 保证中间件只执行一次
+	for ; c.index < s; c.index++ {
+		c.handlers[c.index](c)
+	}
+}
+
+func (c *Context) Fail(code int, err string) {
+	c.index = len(c.handlers)
+	c.JSON(code, H{"message": err})
 }
 
 func (c *Context) Param(key string) string {

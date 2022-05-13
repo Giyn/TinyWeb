@@ -11,14 +11,14 @@
 package main
 
 import (
-	tinygin "TinyGin/middleware/tiny-gin"
+	"TinyGin/middleware/tinyweb"
 	"log"
 	"net/http"
 	"time"
 )
 
-func onlyForV2() tinygin.HandlerFunc {
-	return func(c *tinygin.Context) {
+func onlyForV2() tinyweb.HandlerFunc {
+	return func(c *tinyweb.Context) {
 		// Start timer
 		t := time.Now()
 		// if a server error occurred
@@ -29,15 +29,15 @@ func onlyForV2() tinygin.HandlerFunc {
 }
 
 func main() {
-	r := tinygin.New()
-	r.Use(tinygin.Logger()) // global middleware
-	r.GET("/", func(c *tinygin.Context) {
+	r := tinyweb.New()
+	r.Use(tinyweb.Logger()) // global middleware
+	r.GET("/", func(c *tinyweb.Context) {
 		c.HTML(http.StatusOK, "<h1>Hello TinyGin</h1>")
 	})
 	v2 := r.Group("/v2")
 	v2.Use(onlyForV2()) // v2 group middleware
 	{
-		v2.GET("/hello/:name", func(c *tinygin.Context) {
+		v2.GET("/hello/:name", func(c *tinyweb.Context) {
 			// expect /hello/Giyn
 			c.String(http.StatusOK, "hello %s, you're at %s\n", c.Param("name"), c.Path)
 		})

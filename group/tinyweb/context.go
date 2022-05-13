@@ -1,6 +1,6 @@
 /*
 -------------------------------------
-# @Time    : 2022/5/10 0:21:07
+# @Time    : 2022/5/11 14:43:27
 # @Author  : Giyn
 # @Email   : giyn.jy@gmail.com
 # @File    : context.go
@@ -8,7 +8,7 @@
 -------------------------------------
 */
 
-package tiny_gin
+package tinyweb
 
 import (
 	"encoding/json"
@@ -26,6 +26,7 @@ type Context struct {
 	// 请求字段
 	Path   string
 	Method string
+	Params map[string]string // 提供对路由参数的访问
 	// 响应字段
 	StatusCode int
 }
@@ -37,6 +38,11 @@ func newContext(w http.ResponseWriter, req *http.Request) *Context {
 		Path:   req.URL.Path,
 		Method: req.Method,
 	}
+}
+
+func (c *Context) Param(key string) string {
+	value, _ := c.Params[key]
+	return value
 }
 
 // PostForm 访问PostForm参数
