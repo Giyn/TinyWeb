@@ -32,7 +32,7 @@ func main() {
 	r := tinyweb.New()
 	r.Use(tinyweb.Logger()) // global middleware
 	r.GET("/", func(c *tinyweb.Context) {
-		c.HTML(http.StatusOK, "<h1>Hello TinyGin</h1>")
+		c.HTML(http.StatusOK, "<h1>Hello TinyWeb</h1>")
 	})
 	v2 := r.Group("/v2")
 	v2.Use(onlyForV2()) // v2 group middleware

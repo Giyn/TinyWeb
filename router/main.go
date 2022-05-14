@@ -18,7 +18,7 @@ import (
 func main() {
 	r := tinyweb.New()
 	r.GET("/", func(c *tinyweb.Context) {
-		c.HTML(http.StatusOK, "<h1>Hello TinyGin</h1>")
+		c.HTML(http.StatusOK, "<h1>Hello TinyWeb</h1>")
 	})
 	r.GET("/hello", func(c *tinyweb.Context) {
 		// expect /hello?name=Giyn
