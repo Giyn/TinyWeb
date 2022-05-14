@@ -11,6 +11,7 @@
 package tinyweb
 
 import (
+	"html/template"
 	"log"
 	"net/http"
 	"path"
@@ -28,33 +29,13 @@ type (
 	}
 	// Engine 框架的所有资源由 Engine 统一协调
 	Engine struct {
-		*RouterGroup // 继承底层模块所拥有的能力
-		router       *router
-		groups       []*RouterGroup // 存储所有路由组
+		*RouterGroup  // 继承底层模块所拥有的能力
+		router        *router
+		groups        []*RouterGroup     // 存储所有路由组
+		htmlTemplates *template.Template // 将所有的模板加载进内存
+		funcMap       template.FuncMap   // 所有的自定义模板渲染函数
 	}
 )
-
-// createStaticHandler 创建静态资源
-func (group *RouterGroup) createStaticHandler(relativePath string, fs http.FileSystem) HandlerFunc {
-	absolutePath := path.Join(group.prefix, relativePath)
-	fileServer := http.StripPrefix(absolutePath, http.FileServer(fs))
-	return func(c *Context) {
-		file := c.Param("filepath")
-		// 判断文件是否存在或者是否有权限
-		if _, err := fs.Open(file); err != nil {
-			c.Status(http.StatusNotFound)
-			return
-		}
-		fileServer.ServeHTTP(c.Writer, c.Req)
-	}
-}
-
-// Static 提供静态文件
-func (group *RouterGroup) Static(relativePath, root string) {
-	handler := group.createStaticHandler(relativePath, http.Dir(root))
-	urlPattern := path.Join(relativePath, "/*filepath")
-	group.GET(urlPattern, handler)
-}
 
 func New() *Engine {
 	engine := &Engine{router: newRouter()}
@@ -91,6 +72,38 @@ func (group *RouterGroup) GET(pattern string, handler HandlerFunc) {
 
 func (group *RouterGroup) POST(pattern string, handler HandlerFunc) {
 	group.addRoute("POST", pattern, handler)
+}
+
+// createStaticHandler 创建静态资源
+func (group *RouterGroup) createStaticHandler(relativePath string, fs http.FileSystem) HandlerFunc {
+	absolutePath := path.Join(group.prefix, relativePath)
+	fileServer := http.StripPrefix(absolutePath, http.FileServer(fs))
+	return func(c *Context) {
+		file := c.Param("filepath")
+		// 判断文件是否存在或者是否有权限
+		if _, err := fs.Open(file); err != nil {
+			c.Status(http.StatusNotFound)
+			return
+		}
+		fileServer.ServeHTTP(c.Writer, c.Req)
+	}
+}
+
+// Static 提供静态文件
+func (group *RouterGroup) Static(relativePath, root string) {
+	handler := group.createStaticHandler(relativePath, http.Dir(root))
+	urlPattern := path.Join(relativePath, "/*filepath")
+	group.GET(urlPattern, handler)
+}
+
+// SetFuncMap 设置自定义渲染函数 funcMap
+func (engine *Engine) SetFuncMap(funcMap template.FuncMap) {
+	engine.funcMap = funcMap
+}
+
+// LoadHTMLGlob 加载模板
+func (engine *Engine) LoadHTMLGlob(pattern string) {
+	engine.htmlTemplates = template.Must(template.New("").Funcs(engine.funcMap).ParseGlob(pattern))
 }
 
 func (engine *Engine) Run(addr string) (err error) {
