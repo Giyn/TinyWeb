@@ -1,6 +1,6 @@
 /*
 -------------------------------------
-# @Time    : 2022/5/11 20:37:52
+# @Time    : 2022/5/16 2:12:56
 # @Author  : Giyn
 # @Email   : giyn.jy@gmail.com
 # @File    : context.go
@@ -8,7 +8,7 @@
 -------------------------------------
 */
 
-package tinyweb
+package TinyWeb
 
 import (
 	"encoding/json"
@@ -32,6 +32,8 @@ type Context struct {
 	// 中间件
 	handlers []HandlerFunc
 	index    int // 记录当前执行到第几个中间件
+	// engine 指针
+	engine *Engine // 能够通过 Context 访问 Engine 中的 HTML 模板
 }
 
 func newContext(w http.ResponseWriter, req *http.Request) *Context {
@@ -105,9 +107,11 @@ func (c *Context) Data(code int, data []byte) {
 	c.Writer.Write(data)
 }
 
-// HTML 快速构造HTML响应
-func (c *Context) HTML(code int, html string) {
+// HTML html 模板渲染
+func (c *Context) HTML(code int, name string, data interface{}) {
 	c.SetHeader("Content-Type", "text/html")
 	c.Status(code)
-	c.Writer.Write([]byte(html))
+	if err := c.engine.htmlTemplates.ExecuteTemplate(c.Writer, name, data); err != nil {
+		c.Fail(500, err.Error())
+	}
 }

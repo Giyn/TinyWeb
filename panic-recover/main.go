@@ -11,16 +11,16 @@
 package main
 
 import (
-	"TinyGin/panic-recover/tinyweb"
+	"TinyWeb"
 	"net/http"
 )
 
 func main() {
-	r := tinyweb.Default()
-	r.GET("/", func(c *tinyweb.Context) {
+	r := TinyWeb.Default()
+	r.GET("/", func(c *TinyWeb.Context) {
 		c.String(http.StatusOK, "Hello Giyn\n")
 	})
-	r.GET("/panic", func(c *tinyweb.Context) {
+	r.GET("/panic", func(c *TinyWeb.Context) {
 		names := []string{"Giyn"}
 		c.String(http.StatusOK, names[7])
 	})

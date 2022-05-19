@@ -11,7 +11,7 @@
 package main
 
 import (
-	"TinyGin/template/tinyweb"
+	. "TinyWeb"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -29,8 +29,8 @@ func FormatAsDate(t time.Time) string {
 }
 
 func main() {
-	r := tinyweb.New()
-	r.Use(tinyweb.Logger())
+	r := New()
+	r.Use(Logger())
 	r.SetFuncMap(template.FuncMap{
 		"FormatAsDate": FormatAsDate,
 	})
@@ -39,17 +39,17 @@ func main() {
 
 	stu1 := &student{Name: "Giyn", Age: 22}
 	stu2 := &student{Name: "Jack", Age: 20}
-	r.GET("/", func(c *tinyweb.Context) {
+	r.GET("/", func(c *Context) {
 		c.HTML(http.StatusOK, "css.tmpl", nil)
 	})
-	r.GET("/students", func(c *tinyweb.Context) {
-		c.HTML(http.StatusOK, "arr.tmpl", tinyweb.H{
+	r.GET("/students", func(c *Context) {
+		c.HTML(http.StatusOK, "arr.tmpl", H{
 			"title":  "TinyWeb",
 			"stuArr": [2]*student{stu1, stu2},
 		})
 	})
-	r.GET("/date", func(c *tinyweb.Context) {
-		c.HTML(http.StatusOK, "custom_func.tmpl", tinyweb.H{
+	r.GET("/date", func(c *Context) {
+		c.HTML(http.StatusOK, "custom_func.tmpl", H{
 			"title": "TinyWeb",
 			"now":   time.Date(2022, 5, 14, 0, 0, 0, 0, time.UTC),
 		})

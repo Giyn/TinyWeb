@@ -8,7 +8,7 @@
 -------------------------------------
 */
 
-package tinyweb
+package TinyWeb
 
 import "testing"
 

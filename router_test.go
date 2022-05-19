@@ -1,6 +1,6 @@
 /*
 -------------------------------------
-# @Time    : 2022/5/11 18:10:50
+# @Time    : 2022/5/16 2:24:25
 # @Author  : Giyn
 # @Email   : giyn.jy@gmail.com
 # @File    : router_test.go
@@ -8,7 +8,7 @@
 -------------------------------------
 */
 
-package tinyweb
+package TinyWeb
 
 import (
 	"fmt"
@@ -38,16 +38,21 @@ func TestParsePattern(t *testing.T) {
 func TestGetRoute(t *testing.T) {
 	r := newTestRouter()
 	n, ps := r.getRoute("GET", "/hello/Giyn")
+
 	if n == nil {
 		t.Fatal("nil shouldn't be returned")
 	}
+
 	if n.pattern != "/hello/:name" {
 		t.Fatal("should match /hello/:name")
 	}
+
 	if ps["name"] != "Giyn" {
 		t.Fatal("name should be equal to 'Giyn'")
 	}
+
 	fmt.Printf("matched path: %s, params['name']: %s\n", n.pattern, ps["name"])
+
 }
 
 func TestGetRoute2(t *testing.T) {
@@ -57,11 +62,13 @@ func TestGetRoute2(t *testing.T) {
 	if !ok1 {
 		t.Fatal("pattern should be /assets/*filepath & filepath should be file1.txt")
 	}
+
 	n2, ps2 := r.getRoute("GET", "/assets/css/test.css")
 	ok2 := n2.pattern == "/assets/*filepath" && ps2["filepath"] == "css/test.css"
 	if !ok2 {
 		t.Fatal("pattern should be /assets/*filepath & filepath should be css/test.css")
 	}
+
 }
 
 func TestGetRoutes(t *testing.T) {
@@ -70,6 +77,7 @@ func TestGetRoutes(t *testing.T) {
 	for i, n := range nodes {
 		fmt.Println(i+1, n)
 	}
+
 	if len(nodes) != 5 {
 		t.Fatal("the number of routes should be 4")
 	}

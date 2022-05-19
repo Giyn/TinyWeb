@@ -1,6 +1,6 @@
 /*
 -------------------------------------
-# @Time    : 2022/5/11 20:38:15
+# @Time    : 2022/5/16 2:13:07
 # @Author  : Giyn
 # @Email   : giyn.jy@gmail.com
 # @File    : logger.go
@@ -8,7 +8,7 @@
 -------------------------------------
 */
 
-package tinyweb
+package TinyWeb
 
 import (
 	"log"
